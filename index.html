@@ -38,9 +38,7 @@
     }
 
     .button {
-      display: block;
       width: 100%;
-      box-sizing: border-box;
       background: white;
       color: black;
       border: 0;
@@ -56,40 +54,61 @@
 
 <body>
 
-  <div class="card">
-    <h1>Silviu Udriță</h1>
-    <h2>TRUE GSM</h2>
+<div class="card">
 
-    <div class="phone">
-      +40 761 416 650
-    </div>
+  <h1>Silviu Udriță</h1>
+  <h2>TRUE GSM</h2>
 
-    <button class="button" onclick="saveContact()">
-      SALVEAZĂ CONTACTUL
-    </button>
+  <div class="phone">
+    +40 761 416 650
   </div>
 
-  <script>
-    function saveContact() {
+  <button class="button" onclick="saveContact()">
+    SALVEAZĂ CONTACTUL
+  </button>
 
-      const isiPhone =
-        /iPhone|iPad|iPod/i.test(navigator.userAgent);
+</div>
 
-      if (isiPhone) {
-        window.location.href = "Silviu-Udrita.vcf";
-        return;
-      }
+<script>
+function saveContact() {
 
-      window.location.href =
-        "intent:#Intent;" +
-        "action=android.intent.action.INSERT;" +
-        "type=vnd.android.cursor.dir/contact;" +
-        "S.name=Silviu%20Udri%C8%9B%C4%83;" +
-        "S.phone=%2B40761416650;" +
-        "S.company=True%20GSM;" +
-        "end";
-    }
-  </script>
+  const isiPhone =
+    /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+  if (isiPhone) {
+    window.location.href = "Silviu-Udrita.vcf";
+    return;
+  }
+
+  const vcard =
+`BEGIN:VCARD
+VERSION:3.0
+N:Udriță;Silviu;;;
+FN:Silviu Udriță
+ORG:True GSM
+TEL;TYPE=CELL:+40761416650
+END:VCARD`;
+
+  const blob = new Blob(
+    [vcard],
+    { type: "text/vcard;charset=utf-8" }
+  );
+
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+
+  link.href = url;
+  link.download = "Silviu-Udrita-" + Date.now() + ".vcf";
+
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+
+  setTimeout(function() {
+    URL.revokeObjectURL(url);
+  }, 1000);
+}
+</script>
 
 </body>
 </html>
