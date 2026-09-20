@@ -17,7 +17,7 @@
     .card {
       max-width: 500px;
       margin: 0 auto;
-      padding: 50px 25px;
+      padding: 60px 25px;
     }
 
     h1 {
@@ -39,19 +39,24 @@
 
     .button {
       display: block;
+      width: 100%;
+      box-sizing: border-box;
       background: white;
       color: black;
+      border: 0;
       text-decoration: none;
-      font-size: 22px;
+      font-size: 20px;
       font-weight: bold;
       padding: 20px;
       border-radius: 15px;
       margin-top: 30px;
+      cursor: pointer;
     }
   </style>
 </head>
 
 <body>
+
   <div class="card">
     <h1>Silviu Udriță</h1>
     <h2>TRUE GSM</h2>
@@ -60,9 +65,43 @@
       +40 761 416 650
     </div>
 
-    <a class="button" href="Silviu-Udrita.vcf">
+    <button class="button" onclick="saveContact()">
       SALVEAZĂ CONTACTUL
-    </a>
+    </button>
   </div>
+
+  <script>
+    function saveContact() {
+
+      const vcard =
+`BEGIN:VCARD
+VERSION:3.0
+N:Udriță;Silviu;;;
+FN:Silviu Udriță
+ORG:True GSM
+TEL;TYPE=CELL:+40761416650
+END:VCARD`;
+
+      const blob = new Blob(
+        [vcard],
+        { type: "text/vcard;charset=utf-8" }
+      );
+
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+
+      link.href = url;
+      link.download = "Silviu-Udrita-" + Date.now() + ".vcf";
+
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      setTimeout(function () {
+        URL.revokeObjectURL(url);
+      }, 1000);
+    }
+  </script>
+
 </body>
 </html>
