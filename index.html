@@ -70,7 +70,7 @@
   </div>
 
   <script>
-    async function saveContact() {
+    function saveContact() {
 
       const isiPhone =
         /iPhone|iPad|iPod/i.test(navigator.userAgent);
@@ -80,52 +80,14 @@
         return;
       }
 
-      const vcard =
-`BEGIN:VCARD
-VERSION:3.0
-N:Udriță;Silviu;;;
-FN:Silviu Udriță
-ORG:True GSM
-TEL;TYPE=CELL:+40761416650
-END:VCARD`;
-
-      const file = new File(
-        [vcard],
-        "Silviu-Udrita.vcf",
-        { type: "text/vcard" }
-      );
-
-      try {
-
-        if (
-          navigator.share &&
-          navigator.canShare &&
-          navigator.canShare({ files: [file] })
-        ) {
-
-          await navigator.share({
-            files: [file],
-            title: "Silviu Udriță"
-          });
-
-          return;
-        }
-
-      } catch (error) {
-        if (error.name === "AbortError") return;
-      }
-
-      const url = URL.createObjectURL(file);
-      const link = document.createElement("a");
-
-      link.href = url;
-      link.download = "Silviu-Udrita.vcf";
-
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-
-      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      window.location.href =
+        "intent:#Intent;" +
+        "action=android.intent.action.INSERT;" +
+        "type=vnd.android.cursor.dir/contact;" +
+        "S.name=Silviu%20Udri%C8%9B%C4%83;" +
+        "S.phone=%2B40761416650;" +
+        "S.company=True%20GSM;" +
+        "end";
     }
   </script>
 
