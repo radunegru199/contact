@@ -49,6 +49,20 @@
       margin-top: 30px;
     }
   </style>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+      const isiPhone =
+        /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+      if (isiPhone) {
+        window.location.replace("Silviu-Udrita.vcf");
+      }
+
+    });
+  </script>
+
 </head>
 
 <body>
